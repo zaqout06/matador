@@ -44,38 +44,29 @@ function addSampleGames() {
     const sampleGames = [
         {
             id: generateId(),
-            name: 'FIFA 2025',
-            description: 'أحدث إصدار من لعبة كرة القدم الشهيرة مع تحديثات جديدة وفرق عالمية',
-            price: 59.99,
+            name: 'جستس',
+            description: 'بحبه ',
+            price: 99,
             category: 'رياضة',
-            imageUrl: 'images/fifa2025.jpg',
+            imageUrl: 'https://scontent.fjrs4-1.fna.fbcdn.net/v/t1.30497-1/453178253_471506465671661_2781666950760530985_n.png?stp=dst-png_s200x200&_nc_cat=1&ccb=1-7&_nc_sid=136b72&_nc_ohc=H2DqUOt9CTcQ7kNvwH9nIrx&_nc_oc=AdlFSf9pHqGzzHmK67DOOBDM4f9GBrZOxYq_HW6BUXhAZt10re1BJpoTNyRouJwL2s4&_nc_zt=24&_nc_ht=scontent.fjrs4-1.fna&oh=00_AfKPhxvS4pw0E7vKEqmiXgssUCnOy94rL9AaZ7nAg5asGg&oe=684EFABA',
             createdAt: new Date().toISOString()
         },
         {
             id: generateId(),
-            name: 'Call of Duty: Modern Warfare',
-            description: 'لعبة أكشن من منظور الشخص الأول مع قصة مشوقة وأسلحة متطورة',
-            price: 69.99,
+            name: 'abubaker',
+            description: 'بحبه ',
+            price: 99,
             category: 'أكشن',
-            imageUrl: 'images/cod.jpg',
+            imageUrl: 'https://scontent.fjrs4-1.fna.fbcdn.net/v/t39.30808-1/426613353_1079199510015366_421182586223000925_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=106&ccb=1-7&_nc_sid=e99d92&_nc_ohc=dGHJQNw1x_cQ7kNvwGSXkFe&_nc_oc=AdmdXL-WPS6GqbAZArx79Zu9KyvkfNqWP_2bNZXTCP7VOAnl2LqHzf-j7CSZjMAohcc&_nc_zt=24&_nc_ht=scontent.fjrs4-1.fna&_nc_gid=_nOHlTEds5amlMggApkoow&oh=00_AfIMjx98md6gc86MgpW_sEjK0Rfy0pMDZkrb66Fo29mIKQ&oe=682D5C86',
             createdAt: new Date().toISOString()
         },
         {
             id: generateId(),
-            name: 'Minecraft',
-            description: 'عالم مفتوح للبناء والاستكشاف مع إمكانيات لا حدود لها',
-            price: 29.99,
+            name: 'زوقوت',
+            description: 'بموووووووت فيه ',
+            price: 99,
             category: 'مغامرات',
-            imageUrl: 'images/minecraft.jpg',
-            createdAt: new Date().toISOString()
-        },
-        {
-            id: generateId(),
-            name: 'Age of Empires IV',
-            description: 'لعبة استراتيجية تاريخية تتيح لك بناء حضارتك وقيادة جيوشك للنصر',
-            price: 49.99,
-            category: 'استراتيجية',
-            imageUrl: 'images/aoe.jpg',
+            imageUrl: 'https://scontent.fjrs4-1.fna.fbcdn.net/v/t39.30808-6/495611242_3095159737313503_768992776859744980_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=nasZ9HBhzPEQ7kNvwEyUigz&_nc_oc=Adlvy86pQgmhBKYiMfIEldHb2a9oEh_wgpNTwYv5PVbWs_8UzEVpKhLR5QQ7VKZP6f8&_nc_zt=23&_nc_ht=scontent.fjrs4-1.fna&_nc_gid=9BUUAfy3mQASnATCBKTbYQ&oh=00_AfKbZUfep6SmAwUoLZuMZ849UzcoP9bgz-Gso2wdiCufEw&oe=682D4884',
             createdAt: new Date().toISOString()
         }
     ];
