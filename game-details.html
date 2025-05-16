@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تفاصيل اللعبة - Matador</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>Matador</h1>
+            </div>
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="index.html">الرئيسية</a></li>
+                    <li><a href="store.html">المتجر</a></li>
+                    <li><a href="login.html">تسجيل الدخول</a></li>
+                    <li><a href="register.html">إنشاء حساب</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="game-details">
+        <div class="container">
+            <div id="game-details-container" class="game-details-container">
+                <!-- سيتم إضافة تفاصيل اللعبة هنا عبر JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>جميع الحقوق محفوظة &copy; 2025 - Matador</p>
+        </div>
+    </footer>
+
+    <script src="js/database.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // تحديث قائمة التنقل بناءً على حالة تسجيل الدخول
+            updateNavMenu();
+            
+            // الحصول على معرف اللعبة من الرابط
+            const urlParams = new URLSearchParams(window.location.search);
+            const gameId = urlParams.get('id');
+            
+            if (!gameId) {
+                window.location.href = 'store.html';
+                return;
+            }
+            
+            // عرض تفاصيل اللعبة
+            displayGameDetails(gameId);
+        });
+        
+        // تحديث قائمة التنقل
+        function updateNavMenu() {
+            const navMenu = document.getElementById('nav-menu');
+            const isLoggedIn = window.db.isLoggedIn();
+            const currentUser = window.db.getCurrentUser();
+            
+            if (isLoggedIn) {
+                // إزالة روابط تسجيل الدخول وإنشاء الحساب
+                navMenu.innerHTML = `
+                    <li><a href="index.html">الرئيسية</a></li>
+                    <li><a href="store.html">المتجر</a></li>
+                    ${currentUser.isAdmin ? '<li><a href="admin.html">لوحة التحكم</a></li>' : ''}
+                    <li><a href="#" id="logout-btn">تسجيل الخروج</a></li>
+                `;
+                
+                // إضافة مستمع حدث لزر تسجيل الخروج
+                document.getElementById('logout-btn').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const result = window.db.logoutUser();
+                    if (result.success) {
+                        alert(result.message);
+                        window.location.href = 'index.html';
+                    }
+                });
+            }
+        }
+        
+        // عرض تفاصيل اللعبة
+        function displayGameDetails(gameId) {
+            const gameDetailsContainer = document.getElementById('game-details-container');
+            const game = window.db.getGameById(gameId);
+            
+            if (!game) {
+                gameDetailsContainer.innerHTML = '<p class="no-results">اللعبة غير موجودة</p>';
+                return;
+            }
+            
+            // إنشاء عناصر تفاصيل اللعبة
+            gameDetailsContainer.innerHTML = `
+                <div class="game-image">
+                    <img src="${game.imageUrl}" alt="${game.name}">
+                </div>
+                <div class="game-description">
+                    <h2>${game.name}</h2>
+                    <span class="price">${game.price} $</span>
+                    <p>${game.description}</p>
+                    <p><strong>التصنيف:</strong> ${game.category}</p>
+                    <a href="https://wa.me/970597929091?text=أرغب في شراء لعبة: ${encodeURIComponent(game.name)}" class="btn" target="_blank">شراء اللعبة</a>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

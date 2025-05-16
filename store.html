@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المتجر - Matador</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>Matador</h1>
+            </div>
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="index.html">الرئيسية</a></li>
+                    <li><a href="store.html">المتجر</a></li>
+                    <li><a href="login.html">تسجيل الدخول</a></li>
+                    <li><a href="register.html">إنشاء حساب</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="store-header">
+        <div class="container">
+            <h2>متجر الألعاب</h2>
+            <p>تصفح مجموعتنا الواسعة من الألعاب</p>
+        </div>
+    </section>
+
+    <section class="store-content">
+        <div class="container">
+            <div class="search-filter">
+                <input type="text" id="search-input" placeholder="ابحث عن لعبة...">
+                <select id="category-filter">
+                    <option value="">جميع التصنيفات</option>
+                    <option value="أكشن">أكشن</option>
+                    <option value="مغامرات">مغامرات</option>
+                    <option value="رياضة">رياضة</option>
+                    <option value="استراتيجية">استراتيجية</option>
+                </select>
+                <button id="search-btn" class="btn">بحث</button>
+            </div>
+
+            <div class="games-grid" id="games-container">
+                <!-- سيتم إضافة الألعاب هنا عبر JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>جميع الحقوق محفوظة &copy; 2025 - Matador</p>
+        </div>
+    </footer>
+
+    <script src="js/database.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // تحديث قائمة التنقل بناءً على حالة تسجيل الدخول
+            updateNavMenu();
+            
+            // عرض الألعاب
+            displayGames();
+            
+            // إضافة مستمعي الأحداث للبحث والتصفية
+            const searchBtn = document.getElementById('search-btn');
+            const searchInput = document.getElementById('search-input');
+            const categoryFilter = document.getElementById('category-filter');
+            
+            searchBtn.addEventListener('click', function() {
+                const query = searchInput.value;
+                const category = categoryFilter.value;
+                displayGames(query, category);
+            });
+            
+            // البحث عند الضغط على Enter
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const query = searchInput.value;
+                    const category = categoryFilter.value;
+                    displayGames(query, category);
+                }
+            });
+            
+            // تغيير التصنيف
+            categoryFilter.addEventListener('change', function() {
+                const query = searchInput.value;
+                const category = categoryFilter.value;
+                displayGames(query, category);
+            });
+        });
+        
+        // تحديث قائمة التنقل
+        function updateNavMenu() {
+            const navMenu = document.getElementById('nav-menu');
+            const isLoggedIn = window.db.isLoggedIn();
+            const currentUser = window.db.getCurrentUser();
+            
+            if (isLoggedIn) {
+                // إزالة روابط تسجيل الدخول وإنشاء الحساب
+                navMenu.innerHTML = `
+                    <li><a href="index.html">الرئيسية</a></li>
+                    <li><a href="store.html">المتجر</a></li>
+                    ${currentUser.isAdmin ? '<li><a href="admin.html">لوحة التحكم</a></li>' : ''}
+                    <li><a href="#" id="logout-btn">تسجيل الخروج</a></li>
+                `;
+                
+                // إضافة مستمع حدث لزر تسجيل الخروج
+                document.getElementById('logout-btn').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const result = window.db.logoutUser();
+                    if (result.success) {
+                        alert(result.message);
+                        window.location.href = 'index.html';
+                    }
+                });
+            }
+        }
+        
+        // عرض الألعاب
+        function displayGames(query = '', category = '') {
+            const gamesContainer = document.getElementById('games-container');
+            const games = window.db.searchGames(query, category);
+            
+            // مسح المحتوى الحالي
+            gamesContainer.innerHTML = '';
+            
+            if (games.length === 0) {
+                gamesContainer.innerHTML = '<p class="no-results">لا توجد ألعاب متطابقة مع بحثك</p>';
+                return;
+            }
+            
+            // إضافة الألعاب
+            games.forEach(game => {
+                const gameCard = document.createElement('div');
+                gameCard.className = 'game-card';
+                gameCard.innerHTML = `
+                    <img src="${game.imageUrl}" alt="${game.name}">
+                    <div class="game-info">
+                        <h3>${game.name}</h3>
+                        <p>${game.description.substring(0, 100)}${game.description.length > 100 ? '...' : ''}</p>
+                        <span class="price">${game.price} $</span>
+                        <a href="game-details.html?id=${game.id}" class="btn">عرض التفاصيل</a>
+                    </div>
+                `;
+                gamesContainer.appendChild(gameCard);
+            });
+        }
+    </script>
+</body>
+</html>

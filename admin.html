@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - Matador</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>Matador</h1>
+            </div>
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="index.html">الرئيسية</a></li>
+                    <li><a href="store.html">المتجر</a></li>
+                    <li><a href="admin.html">لوحة التحكم</a></li>
+                    <li><a href="#" id="logout-btn">تسجيل الخروج</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="admin-dashboard">
+        <div class="container">
+            <div class="admin-header">
+                <h2>لوحة تحكم المدير</h2>
+                <button id="add-game-btn" class="btn">إضافة لعبة جديدة</button>
+            </div>
+            
+            <div class="admin-container">
+                <div class="admin-tabs">
+                    <div class="admin-tab active" data-tab="games">الألعاب</div>
+                </div>
+                
+                <div class="admin-content">
+                    <div id="games-tab" class="tab-content active">
+                        <table class="game-list">
+                            <thead>
+                                <tr>
+                                    <th>اسم اللعبة</th>
+                                    <th>السعر</th>
+                                    <th>التصنيف</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="games-table-body">
+                                <!-- سيتم إضافة الألعاب هنا عبر JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- نموذج إضافة/تعديل لعبة -->
+    <div id="game-form-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="form-title">إضافة لعبة جديدة</h2>
+            <form id="game-form">
+                <input type="hidden" id="game-id">
+                <div class="form-group">
+                    <label for="game-name">اسم اللعبة</label>
+                    <input type="text" id="game-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="game-description">وصف اللعبة</label>
+                    <textarea id="game-description" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="game-price">السعر ($)</label>
+                    <input type="number" id="game-price" step="0.01" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="game-category">التصنيف</label>
+                    <select id="game-category" required>
+                        <option value="أكشن">أكشن</option>
+                        <option value="مغامرات">مغامرات</option>
+                        <option value="رياضة">رياضة</option>
+                        <option value="استراتيجية">استراتيجية</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="game-image">رابط الصورة</label>
+                    <input type="text" id="game-image" required>
+                </div>
+                <button type="submit" class="btn">حفظ</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>جميع الحقوق محفوظة &copy; 2025 - Matador</p>
+        </div>
+    </footer>
+
+    <style>
+        /* أنماط النافذة المنبثقة */
+        .modal {
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow: auto;
+        }
+        
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        
+        .close {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-family: inherit;
+            resize: vertical;
+        }
+    </style>
+
+    <script src="js/database.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // التحقق من صلاحيات المسؤول
+            if (!window.db.isLoggedIn() || !window.db.isAdmin()) {
+                alert('غير مصرح لك بالوصول إلى لوحة التحكم');
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // إضافة مستمع حدث لزر تسجيل الخروج
+            document.getElementById('logout-btn').addEventListener('click', function(e) {
+                e.preventDefault();
+                const result = window.db.logoutUser();
+                if (result.success) {
+                    alert(result.message);
+                    window.location.href = 'index.html';
+                }
+            });
+            
+            // عرض قائمة الألعاب
+            displayGames();
+            
+            // إضافة مستمع حدث لزر إضافة لعبة جديدة
+            document.getElementById('add-game-btn').addEventListener('click', function() {
+                openGameForm();
+            });
+            
+            // إضافة مستمع حدث لزر إغلاق النموذج
+            document.querySelector('.close').addEventListener('click', function() {
+                closeGameForm();
+            });
+            
+            // إضافة مستمع حدث لنموذج اللعبة
+            document.getElementById('game-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                saveGame();
+            });
+        });
+        
+        // عرض قائمة الألعاب
+        function displayGames() {
+            const gamesTableBody = document.getElementById('games-table-body');
+            const games = window.db.getAllGames();
+            
+            // مسح المحتوى الحالي
+            gamesTableBody.innerHTML = '';
+            
+            // إضافة الألعاب
+            games.forEach(game => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${game.name}</td>
+                    <td>${game.price} $</td>
+                    <td>${game.category}</td>
+                    <td>
+                        <button class="action-btn edit-btn" data-id="${game.id}">تعديل</button>
+                        <button class="action-btn delete-btn" data-id="${game.id}">حذف</button>
+                    </td>
+                `;
+                gamesTableBody.appendChild(row);
+            });
+            
+            // إضافة مستمعي الأحداث لأزرار التعديل والحذف
+            document.querySelectorAll('.edit-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const gameId = this.getAttribute('data-id');
+                    openGameForm(gameId);
+                });
+            });
+            
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const gameId = this.getAttribute('data-id');
+                    if (confirm('هل أنت متأكد من حذف هذه اللعبة؟')) {
+                        const result = window.db.deleteGame(gameId);
+                        if (result.success) {
+                            alert(result.message);
+                            displayGames();
+                        } else {
+                            alert(result.message);
+                        }
+                    }
+                });
+            });
+        }
+        
+        // فتح نموذج إضافة/تعديل لعبة
+        function openGameForm(gameId = null) {
+            const modal = document.getElementById('game-form-modal');
+            const formTitle = document.getElementById('form-title');
+            const gameIdInput = document.getElementById('game-id');
+            const gameNameInput = document.getElementById('game-name');
+            const gameDescriptionInput = document.getElementById('game-description');
+            const gamePriceInput = document.getElementById('game-price');
+            const gameCategoryInput = document.getElementById('game-category');
+            const gameImageInput = document.getElementById('game-image');
+            
+            // إعادة تعيين النموذج
+            document.getElementById('game-form').reset();
+            
+            if (gameId) {
+                // وضع النموذج في وضع التعديل
+                formTitle.textContent = 'تعديل اللعبة';
+                const game = window.db.getGameById(gameId);
+                
+                if (game) {
+                    gameIdInput.value = game.id;
+                    gameNameInput.value = game.name;
+                    gameDescriptionInput.value = game.description;
+                    gamePriceInput.value = game.price;
+                    gameCategoryInput.value = game.category;
+                    gameImageInput.value = game.imageUrl;
+                }
+            } else {
+                // وضع النموذج في وضع الإضافة
+                formTitle.textContent = 'إضافة لعبة جديدة';
+                gameIdInput.value = '';
+            }
+            
+            // عرض النموذج
+            modal.style.display = 'block';
+        }
+        
+        // إغلاق نموذج إضافة/تعديل لعبة
+        function closeGameForm() {
+            const modal = document.getElementById('game-form-modal');
+            modal.style.display = 'none';
+        }
+        
+        // حفظ اللعبة
+        function saveGame() {
+            const gameId = document.getElementById('game-id').value;
+            const gameName = document.getElementById('game-name').value;
+            const gameDescription = document.getElementById('game-description').value;
+            const gamePrice = document.getElementById('game-price').value;
+            const gameCategory = document.getElementById('game-category').value;
+            const gameImage = document.getElementById('game-image').value;
+            
+            let result;
+            
+            if (gameId) {
+                // تعديل لعبة موجودة
+                result = window.db.updateGame(gameId, {
+                    name: gameName,
+                    description: gameDescription,
+                    price: parseFloat(gamePrice),
+                    category: gameCategory,
+                    imageUrl: gameImage
+                });
+            } else {
+                // إضافة لعبة جديدة
+                result = window.db.addGame(gameName, gameDescription, gamePrice, gameCategory, gameImage);
+            }
+            
+            if (result.success) {
+                alert(result.message);
+                closeGameForm();
+                displayGames();
+            } else {
+                alert(result.message);
+            }
+        }
+    </script>
+</body>
+</html>
