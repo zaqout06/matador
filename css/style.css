@@ -1,0 +1,447 @@
+/* قاعدة أنماط CSS الرئيسية لموقع Matador */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Cairo', sans-serif;
+}
+
+body {
+    background-color: #f5f5f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* تنسيق الهيدر */
+header {
+    background-color: #1a1a2e;
+    color: #fff;
+    padding: 15px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #e94560;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+}
+
+nav ul li {
+    margin-right: 20px;
+}
+
+nav ul li:last-child {
+    margin-right: 0;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #e94560;
+}
+
+/* تنسيق قسم الترحيب */
+.hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('../images/hero-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    text-align: center;
+    padding: 100px 0;
+}
+
+.hero h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+
+.btn {
+    display: inline-block;
+    background-color: #e94560;
+    color: #fff;
+    padding: 12px 30px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #d13354;
+}
+
+/* تنسيق قسم الألعاب المميزة */
+.featured-games {
+    padding: 60px 0;
+}
+
+.featured-games h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 2rem;
+    color: #1a1a2e;
+}
+
+.games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.game-card {
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.game-card:hover {
+    transform: translateY(-10px);
+}
+
+.game-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.game-info {
+    padding: 20px;
+}
+
+.game-info h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #1a1a2e;
+}
+
+.game-info p {
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.game-info .price {
+    font-weight: 700;
+    color: #e94560;
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    display: block;
+}
+
+/* تنسيق قسم التصنيفات */
+.categories {
+    background-color: #f9f9f9;
+    padding: 60px 0;
+}
+
+.categories h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 2rem;
+    color: #1a1a2e;
+}
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.category {
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.category:hover {
+    transform: translateY(-5px);
+}
+
+.category img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.category h3 {
+    padding: 15px;
+    font-size: 1.1rem;
+    color: #1a1a2e;
+}
+
+/* تنسيق نماذج التسجيل وتسجيل الدخول */
+.form-container {
+    max-width: 500px;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.form-container h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #1a1a2e;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #e94560;
+}
+
+.form-container .btn {
+    width: 100%;
+    cursor: pointer;
+    border: none;
+    margin-top: 10px;
+}
+
+.form-container p {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.form-container p a {
+    color: #e94560;
+    text-decoration: none;
+}
+
+/* تنسيق صفحة المتجر */
+.store-header {
+    background-color: #1a1a2e;
+    padding: 40px 0;
+    color: #fff;
+    text-align: center;
+}
+
+.store-header h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.search-filter {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    margin-top: -20px;
+    margin-bottom: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.search-filter input {
+    flex: 1;
+    min-width: 200px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.search-filter select {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    min-width: 150px;
+}
+
+/* تنسيق صفحة تفاصيل اللعبة */
+.game-details {
+    padding: 60px 0;
+}
+
+.game-details-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+.game-image img {
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.game-description h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #1a1a2e;
+}
+
+.game-description .price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #e94560;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.game-description p {
+    margin-bottom: 30px;
+    line-height: 1.8;
+}
+
+/* تنسيق لوحة التحكم */
+.admin-dashboard {
+    padding: 60px 0;
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.admin-header h2 {
+    font-size: 2rem;
+    color: #1a1a2e;
+}
+
+.admin-container {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+}
+
+.admin-tabs {
+    display: flex;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #ddd;
+}
+
+.admin-tab {
+    padding: 15px 30px;
+    cursor: pointer;
+    font-weight: 600;
+    color: #666;
+}
+
+.admin-tab.active {
+    color: #e94560;
+    border-bottom: 3px solid #e94560;
+}
+
+.admin-content {
+    margin-top: 20px;
+}
+
+.game-list {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.game-list th, .game-list td {
+    padding: 15px;
+    text-align: right;
+    border-bottom: 1px solid #ddd;
+}
+
+.game-list th {
+    background-color: #f5f5f5;
+    font-weight: 600;
+}
+
+.action-btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+    font-size: 1rem;
+}
+
+.edit-btn {
+    color: #4caf50;
+}
+
+.delete-btn {
+    color: #f44336;
+}
+
+/* تنسيق الفوتر */
+footer {
+    background-color: #1a1a2e;
+    color: #fff;
+    padding: 30px 0;
+    text-align: center;
+}
+
+/* تصميم متجاوب */
+@media (max-width: 768px) {
+    header .container {
+        flex-direction: column;
+    }
+    
+    nav ul {
+        margin-top: 15px;
+    }
+    
+    .game-details-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .search-filter {
+        flex-direction: column;
+    }
+}
